@@ -38,8 +38,7 @@
        @media only screen and (max-width: 600px) {
         .sve{
             width: 90%;
-            max-width: 100%;
-          
+            max-width: 100%;     
         }
        }
 
@@ -107,13 +106,14 @@
           poruka.innerHTML+=ime+": "+napisi.value+"\n";
           const lineBreak = document.createElement("br");
           poruka.appendChild(lineBreak);
-          //napisi.value="";
          
          //set prouke na firebase
           set(ref(db, "poruke/"), {
               user:ime,
               message:napisi.value
           })
+
+          napisi.value="";
 
         }
 
