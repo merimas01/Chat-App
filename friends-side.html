@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends side</title>
+    
+    <style>
+        .sve{
+        background-color:antiquewhite;
+        width:50%;
+        margin:auto;
+        border-radius: 30px;
+        padding:3%;
+       }
+
+       #napisi{
+        width:100%;
+        padding:0.5%;
+        border-radius: 10px;
+        border:groove;
+       }
+
+       #posalji{
+        border-radius: 10px;
+        border: groove;
+        width:20%;
+        padding:0.5%;
+       }
+
+       .unos{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+       }
+    </style>
+
+</head>
+<body>
+    
+    <div class="sve">
+        <p id="poruka"></p>
+        <br>
+        <div class="unos">
+            <input id="napisi">
+            <button id="posalji">Pošalji</button>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYdgGViQVPn-yuvi0VpOfzj3bcjI7LKB0",
+            authDomain: "chat-app-4b73e.firebaseapp.com",
+            databaseURL: "https://chat-app-4b73e-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "chat-app-4b73e",
+            storageBucket: "chat-app-4b73e.appspot.com",
+            messagingSenderId: "31109248276",
+            appId: "1:31109248276:web:e9460aa4e5bbcb431abe01"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        import {getDatabase, set, get, update, remove, ref, child} 
+                from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+
+            
+        const db=getDatabase();
+        var poruka=document.getElementById("poruka");
+        var posalji=document.getElementById("posalji");
+        var napisi=document.getElementById("napisi");
+
+        posalji.addEventListener('click',PosaljiPoruku);
+
+        var ime=prompt("Upisi ime").bold();
+
+        function PosaljiPoruku(){
+            update(ref(db,'varijable/'),{
+            prijatelj_napisao:true,
+            ja_napisala:false
+            })
+
+            //set messages2
+
+            poruka.innerHTML+=ime+": "+napisi.value+"\n";
+            const lineBreak = document.createElement("br");
+            poruka.appendChild(lineBreak);
+            
+            //set prouke na firebase
+            set(ref(db, "poruke2/"), {
+                user:ime,
+                message:napisi.value
+            })
+        }
+
+
+        var interval = setInterval(UcitajMojeMessages, 1000);
+
+        function UcitajMojeMessages(){
+            const dbref=ref(db);
+
+            get(child(dbref,"varijable/"+'ja_napisala'))
+            .then((snapshot)=>{
+                if(snapshot.val()==true){
+
+                    get(child(dbref,"poruke/"))
+                    .then((snapshot)=>{
+                        poruka.innerHTML+=snapshot.val().user+": "+snapshot.val().message+"\n";
+                        const lineBreak = document.createElement("br");
+                        poruka.appendChild(lineBreak);
+                    })
+
+                    update(ref(db, "varijable/"), {
+                        ja_napisala:false,
+                        prijatelj_napisao:false
+                    })
+                }
+            })
+        }
+
+
+
+    </script>
+
+    
+</body>
+</html>
