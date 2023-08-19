@@ -1,4 +1,4 @@
-#A little chat application that simulate a conversation between you and someone else.
+A little chat application that simulate a conversation between you and someone else.
 
 - first you need to type your name 
 
