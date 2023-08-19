@@ -86,9 +86,20 @@
         var posalji=document.getElementById("posalji");
         var napisi=document.getElementById("napisi");
 
+        let brojac=0;
+
         posalji.addEventListener('click',PosaljiPoruku);
 
         var ime=prompt("Upisi ime").bold();
+
+
+         function removeText(originaltxt) {
+            originalText = originaltxt;
+            newText = originalText.replace(originaltxt, '');
+        
+            document.querySelector('#poruka').innerHTML
+                    = newText;
+        }
 
         function PosaljiPoruku(){
             update(ref(db,'varijable/'),{
@@ -96,10 +107,17 @@
             ja_napisala:false
             })
 
-            //set messages2
+            brojac++;
 
+            //set messages2
             poruka.innerHTML+=ime+": "+napisi.value+"\n";
             const lineBreak = document.createElement("br");
+           /*  var btn = document.createElement('button');
+             btn.innerText="Obriši";
+             btn.innerText+=brojac;
+             btn.style.background="white";
+             btn.style.border="none";
+             poruka.appendChild(btn);*/
             poruka.appendChild(lineBreak);
             
             //set prouke na firebase
